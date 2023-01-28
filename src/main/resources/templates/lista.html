@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${titulo}"> </title>
+</head>
+
+<body>
+	<h1 th:text="${titulo}"></h1>
+	<br>
+	<br>
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Nombre</th>
+				<th>Saldo</th>
+				<th>Numero de telefono</th>
+				<th>Dia de creacion</th>
+			</tr>
+		</thead>
+		<tbody>
+			<p th:if="${cuentas.isEmpty()}">La lista de cuentas esta vacia</p>
+			
+			<tr th:each="cuenta: ${cuentas}"></tr>
+			<tr th:each="cuenta: ${cuentas}">
+				<td th:text="${cuenta.getId()}"></td>
+				<td th:text="${cuenta.getNombre()}"></td>
+				<td th:text="${cuenta.getSaldo()}"></td>
+				<td th:text="${cuenta.getNumeroTelefono()}"></td>
+				<td th:text="${cuenta.getDiaCreacion()}"></td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
