@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title th.text="${titulo}">Insert title here</title>
+<title th:text="${titulo}"></title>
 </head>
 <body>
 	<h3 th:text="${titulo}"></h3>
@@ -11,9 +11,11 @@
 	<br>
 	
 	<tbody>
+	
 		<p th:if="${result}" th:text="${mensaje}"></p>
 		
 		<div>
+		
 			<form th:action="@{/formtarjeta}" th:object="${tarjeta}" method="post">
 				<table>
 					<tr>
@@ -27,26 +29,28 @@
 					</tr>
 					
 					<tr>
-						<td>Fechade vencimiento (yyyy-MM-dd)</td>
-						<td><input type="text" th:field="*{vencimiento}"></td>
+						<td>Fecha de vencimiento (yyyy-MM-dd)</td>
+						<td><input type="date" th:field="*{vencimiento}"></td>
 					</tr>
 					
 					<tr>
 						<td>Id cuenta</td>
 						<td>
 							<select th:field="*{cuenta}">
-								<option th:each="cuenta : ${listaCuentas}" 
+							<option th:each="cuenta : ${listaCuentas}" 
 										th:value="${cuenta.getId()}"
-										th:text="${cuenta.getId() + ' Nombre: ' + cuenta.getNombre()"></option>
+										th:text="${cuenta.getId()+' Nombre: '+cuenta.getNombre()}"></option>
 							</select>
 						</td>
 					</tr>
 					
 					
 				</table>
-				<br>
-				<input type="submit" value="Registrar tarjeta" />
+				
+				<br><input type="submit" value="Registrar tarjeta" />
+				
 			</form>
+			
 		</div>
 	</tbody>
 	<hr>

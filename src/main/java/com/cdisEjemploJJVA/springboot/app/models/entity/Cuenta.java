@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -32,11 +33,18 @@ public class Cuenta implements Serializable{
 	private String nombre;
 	
 	@Column
-	@NonNull
+	@NotNull
 	private double saldo;
 	
 	@Column(name = "numero_telefono")
 	private String numeroTelefono;
+	
+
+	@Column(name = "dia_creacion")
+	//@NonNull
+	//@Temporal(TemporalType.DATE)
+	//@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date diaCreacion;
 	
 	public Long getId() {
 		return id;
@@ -82,9 +90,4 @@ public class Cuenta implements Serializable{
 		return serialVersionUID;
 	}
 
-	@Column(name = "dia_creacion")
-	@NonNull
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date diaCreacion;
 }

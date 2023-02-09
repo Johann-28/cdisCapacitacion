@@ -9,8 +9,60 @@
 <body>
 	<h1 th:text="${titulo}"></h1>
 	<br>
+	<p th:text="${mensaje}"></p>
+	<p th:text="${mensajeSucces}"></p>
 	<br>
-	<table>
+	
+	<form th:action="@{/buscar-numero-tel}" th:object="${cuenta}" method="post">
+		<table>
+			<tr>
+				<td>Numero de telefono</td>
+				<td><input type="text" th:field="*{numeroTelefono}" required></td>
+			</tr>
+			
+			<br>
+			<input class="btnAceptar" type="submit" value="Buscar" />
+		</table>
+	</form>  
+	
+	<br>
+	<br>
+	<table th:if="${listCuentasNumeroT}">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Nombre</th>
+				<th>Saldo</th>
+				<th>Numero de telefono</th>
+				<th>Dia de creacion</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="cuentabyNum: ${listCuentasNumeroT}"></tr>
+			<tr th:each="cuentabyNum: ${listCuentasNumeroT}">
+				<td th:text="${cuentabyNum.getId()}"></td>
+				<td th:text="${cuentabyNum.getNombre()}"></td>
+				<td th:text="${cuentabyNum.getSaldo()}"></td>
+				<td th:text="${cuentabyNum.getNumeroTelefono()}"></td>
+				<td th:text="${cuentabyNum.getDiaCreacion()}"></td>
+				<td><a class="btnEditar" th:href="@{/form-cuenta/} + ${cuentabyNum.getId()}" th:text="'Editar'"></a></td>
+				<td><a class="btnEliminar" th:href="@{/eliminarcuenta/} + ${cuentabyNum.getId()}" th:text="'Eliminar'"
+					onclick="return confirm('¿Desea eliminar la cuenta?');"></a></td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	<br>
+	
+	<!-- Abajo estan todos los registros -->
+	
+	<table th:if="!${listCuentasNumeroT}">
+		<a th:href="@{/form-cuenta}"> Registra nueva cuenta</a>	
+		<br>
+		<br>
+		<p th:if="${result}" th:text="${mensaje}"></p>
+	
 		<thead>
 			<tr>
 				<th>ID</th>
@@ -30,8 +82,16 @@
 				<td th:text="${cuenta.getSaldo()}"></td>
 				<td th:text="${cuenta.getNumeroTelefono()}"></td>
 				<td th:text="${cuenta.getDiaCreacion()}"></td>
+				
+				<td> <a th:href="@{/form-cuenta/} + ${cuenta.getId()}" th:text="'Editar'"></a></td> 
+ 				<td> <a th:href="@{/eliminarcuenta/} + ${cuenta.getId()}" th:text="'Eliminar'" onClick="return confirm('¿Desea eliminar la cuenta?;')"></a></td> 
+				
 			</tr>
 		</tbody>
 	</table>
+	<br>
+	
 </body>
+	    <a th:if="!${listCuentasNumeroT}" th:href="@{/}">Inicio</a>
+	    <a th:if="!${listCuentasNumeroT}" th:href="@{/lista}">Volver</a>
 </html>

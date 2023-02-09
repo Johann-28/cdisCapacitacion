@@ -1,5 +1,6 @@
 package com.cdisEjemploJJVA.springboot.app.models.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -22,14 +23,12 @@ public class CuentaDaoImpl implements ICuentaDao {
 	@Transactional(readOnly = true)
 	@Override
 	public List<Cuenta> findAll() {
-		// TODO Auto-generated method stub
 		return em.createQuery("from Cuenta").getResultList();
 	}
 	
-	@Transactional(readOnly = true)
 	@Override
+	@Transactional
 	public void save(Cuenta cuenta) {
-		// TODO Auto-generated method stub
 		if(cuenta.getId() != null && cuenta.getId() > 0) {
 			em.merge(cuenta);
 		}else {
@@ -38,13 +37,27 @@ public class CuentaDaoImpl implements ICuentaDao {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Cuenta findOne(Long id) {
 		return em.find(Cuenta.class,id);
 	}
 
 	@Override
+	@Transactional
 	public void delete(Long id) {
 		em.remove(findOne(id));
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Cuenta> findByNumeroTelefono(String term) {
+		List<Cuenta> cuentas = new ArrayList<Cuenta>();
+		for(Cuenta cuenta : this.findAll()) {
+			if(cuenta.getNumeroTelefono().equals(term)) {
+				cuentas.add(cuenta);				
+			}
+		}
+		return cuentas;
 	}
 	
 	

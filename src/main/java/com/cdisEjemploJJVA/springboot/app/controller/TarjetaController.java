@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cdisEjemploJJVA.springboot.app.editors.CuentaPropertyEditor;
 import com.cdisEjemploJJVA.springboot.app.errors.DataBaseBancoException;
+import com.cdisEjemploJJVA.springboot.app.models.dao.ICuentaDao;
 //import com.cdisEjemploJJVA.springboot.app.models.dao.ICuentaDao;
 import com.cdisEjemploJJVA.springboot.app.models.dao.ITarjetaDao;
 import com.cdisEjemploJJVA.springboot.app.models.entity.Cuenta;
@@ -34,8 +35,8 @@ public class TarjetaController {
 	@Autowired
 	private ITarjetaDao tarjetaDao;
 	
-	//@Autowired
-	//private ICuentaDao cuentaDao;
+	@Autowired
+	private ICuentaDao cuentaDao;
 	
 	@Autowired
 	private CuentaPropertyEditor cuentaEditor;
@@ -54,23 +55,24 @@ public class TarjetaController {
 	}
 	
 	@RequestMapping(value = "/formtarjeta")
-	public String crear(Map<String, Object> model){
+	public String crear(Map<String, Object> model, Model modelList){
 		Tarjeta tarjeta = new Tarjeta();
-		//List<Cuenta> listaCuentas = cuentaDao.findAll();
+		List<Cuenta> listaCuentas = cuentaDao.findAll();
 		model.put("tarjeta", tarjeta);
-		//modelList.addAttribute("listaCuentas", listaCuentas);
+		modelList.addAttribute("listaCuentas", listaCuentas);
 		model.put("titulo", "Llenar los datos de una tarjeta");
 		return "formtarjeta";
 	}
 	
 	@RequestMapping(value = "/formtarjeta/{id}")
 	public String editar(@PathVariable(value="id") Long Id, Map<String,Object> model) {
+	
 		Tarjeta tarjeta= null;
 		
 		if(Id > 0 && Id != null){
 			tarjeta = tarjetaDao.findOne(Id);
 		}else{
-			return "redirect:/index";
+			return "index";
 		}
 		model.put("tarjeta", tarjeta);
 		model.put("titulo" , "Editar tarjeta");
@@ -83,9 +85,10 @@ public class TarjetaController {
 						RedirectAttributes flash){
 		
 		if (result.hasErrors()) {
-			model.addAttribute("titulo", "Llene correctamente los datos");
+			model.addAttribute("titulo", "Llene correctamente los campos");
 			model.addAttribute("result", result.hasErrors());
-			model.addAttribute("mensaje", "Error al enviar los datos, por favort escribaa correctamente los datos");
+			System.out.println("");
+			model.addAttribute("mensaje", "Error al enviar los datos, por favor escriba correctamente los datos");
 			return "formtarjeta";
 		}else {
 			model.addAttribute("result", false);
@@ -95,6 +98,7 @@ public class TarjetaController {
 		model.addAttribute("mensaje" , "Se envio la informacion correctamente");
 		try {
 			tarjetaDao.save(tarjeta);
+			
 		} catch (DataBaseBancoException e) {
 			e.printStackTrace();
 			flash.addFlashAttribute("mensaje" , e.getMessage());
@@ -105,12 +109,13 @@ public class TarjetaController {
 		return "redirect:formtarjeta";
 	}
 	
+	
 	@RequestMapping(value = "/eliminar/{id}")
 	public String eliminar(@PathVariable(value = "id") Long id) {
 		if(id > 0 && id != null) {
 			tarjetaDao.delete(id);
 		}
-		return "redirect:tarjetas-lista";
+		return "redirect:/tarjetas-lista";
 	}
 	
 }

@@ -23,17 +23,22 @@
 		</thead>
 		
 		<tbody>
-			<p th:if=${tarjetas.isEmpty()}">No hay tarjetas en la base de datos</p>
+			<p th:if="${tarjetas.isEmpty()}"> No hay tarjetas en la base de datos</p>
 				<tr th:each="tarjeta: ${tarjetas}"></tr>
 				<tr th:each="tarjeta: ${tarjetas}">
-					<td th:text="${tarjeta: ${tarjeta.getId()}"></td>
+					<td th:text="${tarjeta.getId()}"></td>
 					<td th:text="${tarjeta.getNumeroTarjeta()}"></td>
 					<td th:text="${tarjeta.getIcv()}"></td>
 					<td th:text="${tarjeta.getVencimiento()}"></td>
-					<td th:text="${tarjeta.getCuenta}"></td>
+					 <td th:text="${'Nombre: '+tarjeta.getCuenta().getNombre()+ ' ID: ' +tarjeta.getCuenta().getId()}"></td>
+					 <td><a th:href="@{/formtarjeta/} + ${tarjeta.getId()}" th:text="'Editar'"></a></td>
+               		 <td><a th:href="@{/eliminar/} + ${tarjeta.getId()}" th:text="'Eliminar'" onclick="return confirm('¿Desea eliminar la tarjeta?');"></a></td>
+            
 				</tr>
 		</tbody>
 	</table>
+	    <br>
+    <a th:href="@{/}">Inicio</a>
 	
 </body>
 </html>

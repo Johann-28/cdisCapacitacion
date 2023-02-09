@@ -32,6 +32,19 @@ public class Tarjeta implements Serializable{
 	@Column(name = "numero_tarjeta", nullable = false, length = 16)
 	private String numeroTarjeta;
 	
+	@Column(name = "icv", nullable = false, length = 3)
+	@NotEmpty
+	private String icv;
+	
+	@Column(name = "vencimiento")
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date vencimiento;
+	
+	@JoinColumn(name = "cuenta", referencedColumnName = "id", nullable = true)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private Cuenta cuenta;
+	
 	public Long getId() {
 		return id;
 	}
@@ -76,18 +89,9 @@ public class Tarjeta implements Serializable{
 		return serialVersionUID;
 	}
 
-	@Column(name = "icv", nullable = false, length = 3)
-	@NotEmpty
-	private String icv;
+
 	
-	@Column(name = "vencimiento")
-	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date vencimiento;
 	
-	@JoinColumn(name = "cuenta", referencedColumnName = "id", nullable = false)
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	private Cuenta cuenta;
 	
 	
 }
